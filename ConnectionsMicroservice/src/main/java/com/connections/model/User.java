@@ -1,5 +1,7 @@
 package com.connections.model;
 
+import com.connections.dto.NewUserDto;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.neo4j.springframework.data.core.schema.GeneratedValue;
 import org.neo4j.springframework.data.core.schema.Node;
 import org.neo4j.springframework.data.core.schema.Property;
@@ -16,6 +18,10 @@ public class User {
 
 	public User() {
 		super();
+	}
+
+	public User(NewUserDto dto){
+		this.username = dto.getUsername();
 	}
 
 	public Long getId() {
