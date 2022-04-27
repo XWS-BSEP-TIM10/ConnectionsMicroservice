@@ -2,14 +2,14 @@ package com.connections.dto;
 
 public class ConnectionsResponseDto {
 
-    private Long id;
+    private String id;
     private boolean success;
     private String message;
 
     public ConnectionsResponseDto() {
     }
 
-    public ConnectionsResponseDto(Long id, boolean success, String message) {
+    public ConnectionsResponseDto(String id, boolean success, String message) {
         this.id = id;
         this.success = success;
         this.message = message;
@@ -20,7 +20,7 @@ public class ConnectionsResponseDto {
         this.message = message;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

@@ -13,6 +13,10 @@ public class User {
 	@Id
 	@GeneratedValue
 	private Long id;
+
+	@Property
+	private String uuid;
+
 	@Property("username")
 	private String username;
 
@@ -22,6 +26,14 @@ public class User {
 
 	public User(NewUserDto dto){
 		this.username = dto.getUsername();
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public Long getId() {

@@ -25,7 +25,7 @@ public class UserController {
         User user = service.save(new User(dto));
         if (user == null)
             return ResponseEntity.ok(new ConnectionsResponseDto(false, "failed"));
-        return ResponseEntity.ok(new ConnectionsResponseDto(user.getId(), true, "sucess"));
+        return ResponseEntity.ok(new ConnectionsResponseDto(user.getUuid(), true, "sucess"));
     }
 
     @DeleteMapping("/{id}")
