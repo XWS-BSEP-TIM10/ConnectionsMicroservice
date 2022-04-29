@@ -37,14 +37,14 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     @Override
     public Connection approveConnectionRequest(String username) throws UserDoesNotExist {
-        User loggedUser = userService.findByUsername("kina"); //uzeti ulogovanog usera iz konteksta
+        User loggedUser = userService.findByUsername("pera"); //uzeti ulogovanog usera iz konteksta
         if(userService.findByUsername(username) == null){throw new UserDoesNotExist();}
         return  connectionRepository.updateConnectionStatus(loggedUser.getUsername(), username, "CONNECTED");
     }
 
     @Override
     public Connection refuseConnectionRequest(String username) throws UserDoesNotExist {
-        User loggedUser = userService.findByUsername("kina"); //uzeti ulogovanog usera iz konteksta
+        User loggedUser = userService.findByUsername("pera"); //uzeti ulogovanog usera iz konteksta
         if(userService.findByUsername(username) == null){throw new UserDoesNotExist();}
         return  connectionRepository.updateConnectionStatus(loggedUser.getUsername(), username, "REFUSED");
     }
