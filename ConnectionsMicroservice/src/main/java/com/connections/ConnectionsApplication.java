@@ -30,11 +30,12 @@ public class ConnectionsApplication  implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		Role role = new Role("ROLE_USER");
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        roleService.save(role);
-
+		//Role role = 
+        List<Role> roles = roleService.findByName("ROLE_USER");
+        //roles.add(role);
+		if(roles.size()==0) {
+        roleService.save(new Role("ROLE_USER"));
+		}
 		User user1=new User();
 		user1.setUsername("pera");
 		user1.setConnections(new HashMap<>());

@@ -4,6 +4,7 @@ import com.connections.dto.NewUserDto;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,7 @@ public class User implements UserDetails{
 
 	public User() {
 		super();
+		this.connections = new HashMap<>();
 	}
 
 	public User(String uuid, String username, Boolean isPrivate, List<Role> roles, Map<User, Connection> connections) {
@@ -55,6 +57,7 @@ public class User implements UserDetails{
 	public User(NewUserDto dto){
 		this.username = dto.getUsername();
 		this.isPrivate = false;
+		this.connections = new HashMap<>();
 	}
 
 	public String getUuid() {
