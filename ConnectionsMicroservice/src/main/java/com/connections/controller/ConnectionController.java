@@ -2,7 +2,12 @@ package com.connections.controller;
 
 import com.connections.dto.ConnectionRequestDto;
 import com.connections.exception.UserDoesNotExist;
+import com.connections.model.User;
 import com.connections.service.ConnectionService;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,5 +60,13 @@ public class ConnectionController {
         }catch(Exception ex){
             return new ResponseEntity<>("Something went wrong.", HttpStatus.OK);
         }
+    }
+    
+    @GetMapping
+    public ResponseEntity<List<User>> getFollowing(){
+    	List<User> retVal = new ArrayList<User>();
+    	retVal.addAll(connectionService.getFollowing());
+    	retVal.addAll(connectionService.getFollowers());
+    	return new ResponseEntity<>(retVal,  HttpStatus.OK);
     }
 }

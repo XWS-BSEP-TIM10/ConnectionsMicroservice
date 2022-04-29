@@ -1,6 +1,7 @@
 package com.connections.model;
 
 import com.connections.dto.NewUserDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -132,6 +133,7 @@ public class User implements UserDetails{
         return true;
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authorities = new ArrayList<>();

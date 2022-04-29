@@ -7,6 +7,9 @@ import com.connections.model.User;
 import com.connections.repository.ConnectionRepository;
 import com.connections.service.ConnectionService;
 import com.connections.service.UserService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,4 +51,18 @@ public class ConnectionServiceImpl implements ConnectionService {
         if(userService.findByUsername(username) == null){throw new UserDoesNotExist();}
         return  connectionRepository.updateConnectionStatus(loggedUser.getUsername(), username, "REFUSED");
     }
+    
+    @Override
+    public List<User> getFollowing(){
+    	User loggedUser = userService.findByUsername("kina");
+    	return connectionRepository.findFollowing(loggedUser.getUsername());
+    }
+    
+    @Override
+    public List<User> getFollowers(){
+    	User loggedUser = userService.findByUsername("kina");
+    	return connectionRepository.findFollowers(loggedUser.getUsername());
+    }
+    
+    
 }

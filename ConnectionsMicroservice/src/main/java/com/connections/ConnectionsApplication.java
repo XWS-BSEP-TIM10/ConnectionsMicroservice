@@ -40,7 +40,7 @@ public class ConnectionsApplication  implements CommandLineRunner {
 		user1.setUsername("pera");
 		user1.setConnections(new HashMap<>());
 		user1.setRoles(roles);
-		user1.setPrivate(true);
+		user1.setPrivate(false);
 		userService.save(user1);
 
 		user1=new User();
