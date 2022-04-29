@@ -11,5 +11,5 @@ import com.connections.model.Role;
 @Repository
 public interface RoleRepository extends Neo4jRepository<Role, Long>{
 	
-   // List<Role> findByName(String name);
+    List<Role> findByName(String name);
 }

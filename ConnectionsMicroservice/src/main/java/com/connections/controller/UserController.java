@@ -20,7 +20,7 @@ public class UserController {
         this.service = service;
     }
 
- /*   @PostMapping
+    @PostMapping
     public ResponseEntity<ConnectionsResponseDto> register(@RequestBody NewUserDto dto) {
         User user = service.save(new User(dto));
         if (user == null)
@@ -32,6 +32,6 @@ public class UserController {
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
-    }*/
+    }
 
 }

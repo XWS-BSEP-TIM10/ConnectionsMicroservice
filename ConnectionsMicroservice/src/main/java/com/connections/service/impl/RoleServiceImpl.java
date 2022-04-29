@@ -7,6 +7,8 @@ import com.connections.model.Role;
 import com.connections.repository.RoleRepository;
 import com.connections.service.RoleService;
 
+import java.util.List;
+
 @Service
 public class RoleServiceImpl implements RoleService{
 	
@@ -19,6 +21,11 @@ public class RoleServiceImpl implements RoleService{
 	public Role save(Role role) {
 		return roleRepository.save(role);
 		
+	}
+
+	@Override
+	public List<Role> findByName(String name) {
+		return roleRepository.findByName(name);
 	}
 
 }

@@ -29,7 +29,7 @@ public class ConnectionsApplication  implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		Role role = new Role("ROLE_USER");
+		/*Role role = new Role("ROLE_USER");
         List<Role> roles = new ArrayList<>();
         roles.add(role);
         roleService.save(role);
@@ -38,7 +38,7 @@ public class ConnectionsApplication  implements CommandLineRunner {
 		user1.setUsername("Pera1");
 		user1.setRoles(roles);
 		userService.save(user1);
-		
+		*/
 	}
 
 }
