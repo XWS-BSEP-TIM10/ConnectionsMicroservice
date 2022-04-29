@@ -1,11 +1,11 @@
 package com.connections.model;
 
-import com.connections.model.Role;
 import com.connections.dto.NewUserDto;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 
 import org.neo4j.springframework.data.core.schema.GeneratedValue;
@@ -30,16 +30,31 @@ public class User implements UserDetails{
 
 	@Property("username")
 	private String username;
-	
+
+	@Property
+	private Boolean isPrivate;
+
 	@Relationship(type = "HAS_ROLE", direction = Relationship.Direction.INCOMING)
 	private List<Role> roles;
+
+	@Relationship(type = "CONNECTED", direction = Relationship.Direction.INCOMING)
+	private Map<User, Connection> connections;
 
 	public User() {
 		super();
 	}
 
+	public User(String uuid, String username, Boolean isPrivate, List<Role> roles, Map<User, Connection> connections) {
+		this.uuid = uuid;
+		this.username = username;
+		this.isPrivate = isPrivate;
+		this.roles = roles;
+		this.connections = connections;
+	}
+
 	public User(NewUserDto dto){
 		this.username = dto.getUsername();
+		this.isPrivate = false;
 	}
 
 	public String getUuid() {
@@ -63,8 +78,24 @@ public class User implements UserDetails{
 		this.username = username;
 	}
 
-	
-    public List<Role> getRoles() {
+
+	public void setPrivate(Boolean aPrivate) {
+		isPrivate = aPrivate;
+	}
+
+	public Boolean getPrivate() {
+		return isPrivate;
+	}
+
+	public void setConnections(Map<User, Connection> connections) {
+		this.connections = connections;
+	}
+
+	public Map<User, Connection> getConnections() {
+		return connections;
+	}
+
+	public List<Role> getRoles() {
 		return roles;
 	}
 
@@ -100,13 +131,12 @@ public class User implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-    	 List<GrantedAuthority> authorities = new ArrayList<>();
-         for (Role role : this.getRoles()) {
-             authorities.add(new SimpleGrantedAuthority(role.getName()));
-         }
-         return authorities;
-    }
-
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		for (Role role : this.getRoles()) {
+			authorities.add(new SimpleGrantedAuthority(role.getName()));
+		}
+		return authorities;
+	}
     
 	@Override
 	public String getPassword() {

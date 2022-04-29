@@ -1,5 +1,6 @@
 package com.connections.model;
 
+import org.hibernate.validator.constraints.UniqueElements;
 import org.neo4j.springframework.data.core.schema.GeneratedValue;
 import org.neo4j.springframework.data.core.schema.Id;
 import org.neo4j.springframework.data.core.schema.Node;
@@ -12,6 +13,7 @@ public class Role {
     private Long id;
 
     @Property(name = "name")
+    @UniqueElements
     private String name;
 
     public Role() {

@@ -1,6 +1,7 @@
 package com.connections;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +30,26 @@ public class ConnectionsApplication  implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		/*Role role = new Role("ROLE_USER");
+		Role role = new Role("ROLE_USER");
         List<Role> roles = new ArrayList<>();
         roles.add(role);
         roleService.save(role);
-		
+
 		User user1=new User();
-		user1.setUsername("Pera1");
+		user1.setUsername("pera");
+		user1.setConnections(new HashMap<>());
 		user1.setRoles(roles);
+		user1.setPrivate(true);
 		userService.save(user1);
-		*/
+
+		user1=new User();
+		user1.setUsername("kina");
+		user1.setRoles(roles);
+		user1.setPrivate(false);
+		user1.setConnections(new HashMap<>());
+		userService.save(user1);
+
+
 	}
 
 }
