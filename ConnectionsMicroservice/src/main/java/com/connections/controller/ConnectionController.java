@@ -63,8 +63,8 @@ public class ConnectionController {
     }
     
     @GetMapping
-    public ResponseEntity<List<User>> getFollowing(){
-    	List<User> retVal = new ArrayList<User>();
+    public ResponseEntity<List<String>> getFollowing(){
+    	List<String> retVal = new ArrayList<String>();
     	retVal.addAll(connectionService.getFollowing());
     	retVal.addAll(connectionService.getFollowers());
     	return new ResponseEntity<>(retVal,  HttpStatus.OK);
