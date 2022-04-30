@@ -26,42 +26,42 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     @Override
-    public Connection sendConnectionRequest(String username) throws UserDoesNotExist {
+    public Connection sendConnectionRequest(String uuid) throws UserDoesNotExist {
 
         User loggedUser = userService.findByUsername("kina"); //uzeti ulogovanog usera iz konteksta
-        User user = userService.findByUsername(username);
+        User user = userService.findByUuid(uuid);
 
         if(user == null){throw new UserDoesNotExist();}
 
         ConnectionStatus status = user.getPrivate() ? ConnectionStatus.PENDING : ConnectionStatus.CONNECTED;
 
-        return connectionRepository.saveConnection(loggedUser.getUsername(), user.getUsername(), status.toString());
+        return connectionRepository.saveConnection(loggedUser.getUuid(), user.getUuid(), status.toString());
     }
 
     @Override
-    public Connection approveConnectionRequest(String username) throws UserDoesNotExist {
+    public Connection approveConnectionRequest(String uuid) throws UserDoesNotExist {
         User loggedUser = userService.findByUsername("pera"); //uzeti ulogovanog usera iz konteksta
-        if(userService.findByUsername(username) == null){throw new UserDoesNotExist();}
-        return  connectionRepository.updateConnectionStatus(loggedUser.getUsername(), username, "CONNECTED");
+        if(userService.findByUuid(uuid) == null){throw new UserDoesNotExist();}
+        return  connectionRepository.updateConnectionStatus(loggedUser.getUuid(), uuid, "CONNECTED");
     }
 
     @Override
-    public Connection refuseConnectionRequest(String username) throws UserDoesNotExist {
+    public Connection refuseConnectionRequest(String uuid) throws UserDoesNotExist {
         User loggedUser = userService.findByUsername("pera"); //uzeti ulogovanog usera iz konteksta
-        if(userService.findByUsername(username) == null){throw new UserDoesNotExist();}
-        return  connectionRepository.updateConnectionStatus(loggedUser.getUsername(), username, "REFUSED");
+        if(userService.findByUuid(loggedUser.getUuid()) == null){throw new UserDoesNotExist();}
+        return  connectionRepository.updateConnectionStatus(loggedUser.getUuid(), uuid, "REFUSED");
     }
     
     @Override
     public List<User> getFollowing(){
     	User loggedUser = userService.findByUsername("kina");
-    	return connectionRepository.findFollowing(loggedUser.getUsername());
+    	return connectionRepository.findFollowing(loggedUser.getUuid());
     }
     
     @Override
     public List<User> getFollowers(){
     	User loggedUser = userService.findByUsername("kina");
-    	return connectionRepository.findFollowers(loggedUser.getUsername());
+    	return connectionRepository.findFollowers(loggedUser.getUuid());
     }
     
     

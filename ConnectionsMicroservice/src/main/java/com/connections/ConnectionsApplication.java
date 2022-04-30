@@ -38,13 +38,15 @@ public class ConnectionsApplication  implements CommandLineRunner {
 		}
 		User user1=new User();
 		user1.setUsername("pera");
+		user1.setUuid("pera");
 		user1.setConnections(new HashMap<>());
 		user1.setRoles(roles);
-		user1.setPrivate(false);
+		user1.setPrivate(true);
 		userService.save(user1);
 
 		user1=new User();
 		user1.setUsername("kina");
+		user1.setUuid("kina");
 		user1.setRoles(roles);
 		user1.setPrivate(false);
 		user1.setConnections(new HashMap<>());

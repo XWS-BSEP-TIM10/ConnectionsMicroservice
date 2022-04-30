@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends Neo4jRepository<User, Long> {
 
     User findByUsername(String username);
+
+    User findByUuid(String uuid);
 }

@@ -27,7 +27,7 @@ public class ConnectionController {
     @PostMapping
     public ResponseEntity<String> connect(@RequestBody ConnectionRequestDto connectionRequestDto) {
         try {
-            connectionService.sendConnectionRequest(connectionRequestDto.getUsername());
+            connectionService.sendConnectionRequest(connectionRequestDto.getUuid());
             return new ResponseEntity<>("Connection created.", HttpStatus.OK);
         }catch(UserDoesNotExist ex){
             return new ResponseEntity<>("User doest not exist.", HttpStatus.OK);
@@ -39,7 +39,7 @@ public class ConnectionController {
     @PutMapping("approve")
     public ResponseEntity<String> approveConnectionRequest(@RequestBody ConnectionRequestDto connectionRequestDto) {
         try {
-            if(connectionService.approveConnectionRequest(connectionRequestDto.getUsername()) == null)
+            if(connectionService.approveConnectionRequest(connectionRequestDto.getUuid()) == null)
                 return new ResponseEntity<>("Connection not found.", HttpStatus.OK);
             return new ResponseEntity<>("Connection approved.", HttpStatus.OK);
         }catch(UserDoesNotExist ex){
@@ -52,7 +52,7 @@ public class ConnectionController {
     @PutMapping("refuse")
     public ResponseEntity<String> refuseConnectionRequest(@RequestBody ConnectionRequestDto connectionRequestDto) {
         try {
-            if(connectionService.refuseConnectionRequest(connectionRequestDto.getUsername()) == null)
+            if(connectionService.refuseConnectionRequest(connectionRequestDto.getUuid()) == null)
                 return new ResponseEntity<>("Connection not found.", HttpStatus.OK);
             return new ResponseEntity<>("Connection refused.", HttpStatus.OK);
         }catch(UserDoesNotExist ex){
