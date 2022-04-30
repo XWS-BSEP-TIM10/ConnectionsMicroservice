@@ -14,8 +14,8 @@ public interface ConnectionService {
 
     Connection refuseConnectionRequest(String username) throws UserDoesNotExist;
     
-    List<String> getFollowing();
+    List<String> getFollowing(String uuid);
     
-    List<String> getFollowers();
+    List<String> getFollowers(String uuid);
 
 }

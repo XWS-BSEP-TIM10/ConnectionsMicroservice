@@ -53,15 +53,13 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
     
     @Override
-    public List<String> getFollowing(){
-    	User loggedUser = userService.findByUsername("kina");
-    	return connectionRepository.findFollowing(loggedUser.getUuid());
+    public List<String> getFollowing(String uuid){
+    	return connectionRepository.findFollowing(uuid);
     }
     
     @Override
-    public List<String> getFollowers(){
-    	User loggedUser = userService.findByUsername("kina");
-    	return connectionRepository.findFollowers(loggedUser.getUuid());
+    public List<String> getFollowers(String uuid){
+    	return connectionRepository.findFollowers(uuid);
     }
     
     

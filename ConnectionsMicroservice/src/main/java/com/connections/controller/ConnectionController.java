@@ -61,12 +61,4 @@ public class ConnectionController {
             return new ResponseEntity<>("Something went wrong.", HttpStatus.OK);
         }
     }
-    
-    @GetMapping
-    public ResponseEntity<List<String>> getFollowing(){
-    	List<String> retVal = new ArrayList<String>();
-    	retVal.addAll(connectionService.getFollowing());
-    	retVal.addAll(connectionService.getFollowers());
-    	return new ResponseEntity<>(retVal,  HttpStatus.OK);
-    }
 }

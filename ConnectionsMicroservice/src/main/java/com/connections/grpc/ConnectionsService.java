@@ -26,8 +26,8 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
     public void getConnections(ConnectionsProto request, StreamObserver<ConnectionsResponseProto> responseObserver){
 
         List<String> connections = new ArrayList<String>();
-        connections.addAll(connectionService.getFollowing());
-        connections.addAll(connectionService.getFollowers());
+        connections.addAll(connectionService.getFollowing(request.getUuid()));
+        connections.addAll(connectionService.getFollowers(request.getUuid()));
 
         ConnectionsResponseProto response  = ConnectionsResponseProto.newBuilder()
                 .addAllConnections(connections)
