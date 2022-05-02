@@ -8,14 +8,14 @@ import com.connections.model.User;
 
 public interface ConnectionService {
 
-    Connection sendConnectionRequest(String username) throws UserDoesNotExist;
+    Connection sendConnectionRequest(String id) throws UserDoesNotExist;
 
-    Connection approveConnectionRequest(String username) throws UserDoesNotExist;
+    Connection approveConnectionRequest(String id) throws UserDoesNotExist;
 
-    Connection refuseConnectionRequest(String username) throws UserDoesNotExist;
+    Connection refuseConnectionRequest(String id) throws UserDoesNotExist;
     
-    List<String> getFollowing(String uuid);
+    List<String> getFollowing(String id);
     
-    List<String> getFollowers(String uuid);
+    List<String> getFollowers(String id);
 
 }

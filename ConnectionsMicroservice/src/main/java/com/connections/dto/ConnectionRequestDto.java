@@ -1,11 +1,11 @@
 package com.connections.dto;
 
 public class ConnectionRequestDto {
-    private String uuid;
+    private String id;
 
     public ConnectionRequestDto() {}
 
-    public String getUuid() {
-        return uuid;
+    public String getId() {
+        return id;
     }
 }

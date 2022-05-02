@@ -2,6 +2,8 @@ package com.connections.controller;
 
 import com.connections.dto.ConnectionRequestDto;
 import com.connections.exception.UserDoesNotExist;
+import com.connections.model.Connection;
+import com.connections.model.ConnectionStatus;
 import com.connections.model.User;
 import com.connections.service.ConnectionService;
 
@@ -27,8 +29,11 @@ public class ConnectionController {
     @PostMapping
     public ResponseEntity<String> connect(@RequestBody ConnectionRequestDto connectionRequestDto) {
         try {
-            connectionService.sendConnectionRequest(connectionRequestDto.getUuid());
-            return new ResponseEntity<>("Connection created.", HttpStatus.OK);
+            Connection newConnection = connectionService.sendConnectionRequest(connectionRequestDto.getId());
+
+            if(newConnection.getConnectionStatus() == ConnectionStatus.CONNECTED)
+                return new ResponseEntity<>("Connection created.", HttpStatus.OK);
+            return new ResponseEntity<>("Connection request sent.", HttpStatus.OK);
         }catch(UserDoesNotExist ex){
             return new ResponseEntity<>("User doest not exist.", HttpStatus.OK);
         }catch(Exception ex){
@@ -39,7 +44,7 @@ public class ConnectionController {
     @PutMapping("approve")
     public ResponseEntity<String> approveConnectionRequest(@RequestBody ConnectionRequestDto connectionRequestDto) {
         try {
-            if(connectionService.approveConnectionRequest(connectionRequestDto.getUuid()) == null)
+            if(connectionService.approveConnectionRequest(connectionRequestDto.getId()) == null)
                 return new ResponseEntity<>("Connection not found.", HttpStatus.OK);
             return new ResponseEntity<>("Connection approved.", HttpStatus.OK);
         }catch(UserDoesNotExist ex){
@@ -52,7 +57,7 @@ public class ConnectionController {
     @PutMapping("refuse")
     public ResponseEntity<String> refuseConnectionRequest(@RequestBody ConnectionRequestDto connectionRequestDto) {
         try {
-            if(connectionService.refuseConnectionRequest(connectionRequestDto.getUuid()) == null)
+            if(connectionService.refuseConnectionRequest(connectionRequestDto.getId()) == null)
                 return new ResponseEntity<>("Connection not found.", HttpStatus.OK);
             return new ResponseEntity<>("Connection refused.", HttpStatus.OK);
         }catch(UserDoesNotExist ex){

@@ -33,10 +33,9 @@ public class ConnectionsApplication  implements CommandLineRunner {
         List<Role> roles = roleService.findByName("ROLE_USER");
         //roles.add(role);
 		if(roles.size()==0) {
-        roleService.save(new Role("ROLE_USER"));
+        	roleService.save(new Role("ROLE_USER"));
 		}
 		User user1=new User();
-		user1.setUsername("pera");
 		user1.setId("pera");
 		user1.setConnections(new HashMap<>());
 		user1.setRoles(roles);
@@ -44,7 +43,6 @@ public class ConnectionsApplication  implements CommandLineRunner {
 		userService.save(user1);
 
 		user1=new User();
-		user1.setUsername("kina");
 		user1.setId("kina");
 		user1.setRoles(roles);
 		user1.setPrivate(false);
@@ -52,7 +50,6 @@ public class ConnectionsApplication  implements CommandLineRunner {
 		userService.save(user1);
 
 		user1=new User();
-		user1.setUsername("marko");
 		user1.setId("marko");
 		user1.setRoles(roles);
 		user1.setPrivate(false);

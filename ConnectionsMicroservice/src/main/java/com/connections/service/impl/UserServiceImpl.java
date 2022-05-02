@@ -20,25 +20,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        User existingUser = userRepository.findByUsername(user.getUsername());
-        if (existingUser != null)
+        if (userRepository.findById(user.getId()).isPresent())
             return null;
         user.setRoles(roleService.findByName("ROLE_USER"));
         return userRepository.save(user);
     }
 
     @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User findById(String id) {
+        return userRepository.findById(id).get();
     }
 
     @Override
-    public User findById(String uuid) {
-        return userRepository.findById(uuid).get();
-    }
-
-    @Override
-    public void deleteById(String uuid) {
-        userRepository.deleteById(uuid);
+    public void deleteById(String id) {
+        userRepository.deleteById(id);
     }
 }

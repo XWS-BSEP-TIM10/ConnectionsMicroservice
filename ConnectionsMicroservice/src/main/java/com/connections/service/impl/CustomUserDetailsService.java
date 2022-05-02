@@ -14,14 +14,12 @@ public class CustomUserDetailsService  implements UserDetailsService{
 	@Autowired
 	private UserRepository userRepository;
 
-	// Funkcija koja na osnovu username-a iz baze vraca objekat User-a
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByUsername(username);
-		if (user == null) {
-			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
+	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+		if (!userRepository.findById(id).isPresent()) {
+			throw new UsernameNotFoundException(String.format("No user found with id '%s'.", id));
 		} else {
-			return user;
+			return userRepository.findById(id).get();
 		}
 	}
 

@@ -25,9 +25,6 @@ public class User implements UserDetails{
 	@Id
 	private String id;
 
-	@Property("username")
-	private String username;
-
 	@Property
 	private Boolean isPrivate;
 
@@ -44,7 +41,6 @@ public class User implements UserDetails{
 
 	public User(String uuid, String username, Boolean isPrivate, List<Role> roles, Map<User, Connection> connections) {
 		this.id = uuid;
-		this.username = username;
 		this.isPrivate = isPrivate;
 		this.roles = roles;
 		this.connections = connections;
@@ -52,7 +48,6 @@ public class User implements UserDetails{
 
 	public User(NewUserDto dto){
 		this.id = dto.getId();
-		this.username = dto.getUsername();
 		this.isPrivate = false;
 		this.connections = new HashMap<>();
 	}
@@ -64,11 +59,6 @@ public class User implements UserDetails{
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 
 	public void setPrivate(Boolean aPrivate) {
 		isPrivate = aPrivate;
@@ -96,9 +86,8 @@ public class User implements UserDetails{
 
 	@Override
     public String getUsername() {
-        return username;
+        return "";
     }
-    
 
     @Override
     public boolean isAccountNonExpired() {
@@ -132,7 +121,6 @@ public class User implements UserDetails{
     
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
 		return "";
 	}
 }

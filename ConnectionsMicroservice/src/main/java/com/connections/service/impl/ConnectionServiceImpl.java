@@ -26,10 +26,10 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     @Override
-    public Connection sendConnectionRequest(String uuid) throws UserDoesNotExist {
+    public Connection sendConnectionRequest(String id) throws UserDoesNotExist {
 
-        User loggedUser = userService.findByUsername("kina"); //uzeti ulogovanog usera iz konteksta
-        User user = userService.findById(uuid);
+        User loggedUser = userService.findById("kina"); //uzeti ulogovanog usera iz konteksta
+        User user = userService.findById(id);
 
         if(user == null){throw new UserDoesNotExist();}
 
@@ -39,27 +39,27 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     @Override
-    public Connection approveConnectionRequest(String uuid) throws UserDoesNotExist {
-        User loggedUser = userService.findByUsername("pera"); //uzeti ulogovanog usera iz konteksta
-        if(userService.findById(uuid) == null){throw new UserDoesNotExist();}
-        return  connectionRepository.updateConnectionStatus(loggedUser.getId(), uuid, "CONNECTED");
+    public Connection approveConnectionRequest(String id) throws UserDoesNotExist {
+        User loggedUser = userService.findById("pera"); //uzeti ulogovanog usera iz konteksta
+        if(userService.findById(id) == null){throw new UserDoesNotExist();}
+        return  connectionRepository.updateConnectionStatus(loggedUser.getId(), id, "CONNECTED");
     }
 
     @Override
-    public Connection refuseConnectionRequest(String uuid) throws UserDoesNotExist {
-        User loggedUser = userService.findByUsername("pera"); //uzeti ulogovanog usera iz konteksta
+    public Connection refuseConnectionRequest(String id) throws UserDoesNotExist {
+        User loggedUser = userService.findById("pera"); //uzeti ulogovanog usera iz konteksta
         if(userService.findById(loggedUser.getId()) == null){throw new UserDoesNotExist();}
-        return  connectionRepository.updateConnectionStatus(loggedUser.getId(), uuid, "REFUSED");
+        return  connectionRepository.updateConnectionStatus(loggedUser.getId(), id, "REFUSED");
     }
     
     @Override
-    public List<String> getFollowing(String uuid){
-    	return connectionRepository.findFollowing(uuid);
+    public List<String> getFollowing(String id){
+    	return connectionRepository.findFollowing(id);
     }
     
     @Override
-    public List<String> getFollowers(String uuid){
-    	return connectionRepository.findFollowers(uuid);
+    public List<String> getFollowers(String id){
+    	return connectionRepository.findFollowers(id);
     }
     
     
