@@ -16,9 +16,9 @@ public interface ConnectionRepository extends Neo4jRepository<Connection, Long> 
     @Query("MATCH (u1:User {uuid: $1})-[r:CONNECTION]->(u2:User {uuid: $0}) SET r.connectionStatus = $2 RETURN r")
     Connection updateConnectionStatus(String connectedUser, String connectingUser, String connectionStatus);
     
-    @Query("MATCH(:User {uuid:$0})-[:CONNECTION {connectionStatus:'CONNECTED'}]->(f:User) RETURN f")
-    List<User> findFollowing(String username);
+    @Query("MATCH(:User {uuid:$0})-[:CONNECTION {connectionStatus:'CONNECTED'}]->(f:User) RETURN f.uuid")
+    List<String> findFollowing(String uuid);
     
-    @Query("MATCH(f:User)-[:CONNECTION {connectionStatus:'CONNECTED'}]->(User {uuid:$0}) RETURN f")
-    List<User> findFollowers(String username);
+    @Query("MATCH(f:User)-[:CONNECTION {connectionStatus:'CONNECTED'}]->(User {uuid:$0}) RETURN f.uuid")
+    List<String> findFollowers(String uuid);
 }

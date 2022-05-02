@@ -4,6 +4,8 @@ import com.connections.security.auth.RestAuthenticationEntryPoint;
 import com.connections.security.auth.TokenAuthenticationFilter;
 import com.connections.security.util.TokenUtils;
 import com.connections.service.impl.CustomUserDetailsService;
+import net.devh.boot.grpc.server.security.authentication.BasicGrpcAuthenticationReader;
+import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +42,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public GrpcAuthenticationReader grpcAuthenticationReader() {
+        return new BasicGrpcAuthenticationReader();
     }
 
     // Definisemo nacin utvrdjivanja korisnika pri autentifikaciji
