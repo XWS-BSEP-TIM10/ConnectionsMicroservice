@@ -1,6 +1,5 @@
 package com.connections.service.impl;
 
-import com.connections.model.Role;
 import com.connections.model.User;
 import com.connections.repository.UserRepository;
 import com.connections.service.RoleService;
@@ -8,8 +7,7 @@ import com.connections.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,12 +33,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUuid(String uuid) {
-        return userRepository.findByUuid(uuid);
+    public User findById(String uuid) {
+        return userRepository.findById(uuid).get();
     }
 
     @Override
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);
+    public void deleteById(String uuid) {
+        userRepository.deleteById(uuid);
     }
 }

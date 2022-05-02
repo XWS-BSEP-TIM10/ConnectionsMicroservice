@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 
-import org.neo4j.springframework.data.core.schema.GeneratedValue;
 import org.neo4j.springframework.data.core.schema.Node;
 import org.neo4j.springframework.data.core.schema.Property;
 import org.neo4j.springframework.data.core.schema.Relationship;
@@ -24,11 +23,7 @@ public class User implements UserDetails{
 	
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue
-	private Long id;
-
-	@Property
-	private String uuid;
+	private String id;
 
 	@Property("username")
 	private String username;
@@ -48,7 +43,7 @@ public class User implements UserDetails{
 	}
 
 	public User(String uuid, String username, Boolean isPrivate, List<Role> roles, Map<User, Connection> connections) {
-		this.uuid = uuid;
+		this.id = uuid;
 		this.username = username;
 		this.isPrivate = isPrivate;
 		this.roles = roles;
@@ -56,27 +51,19 @@ public class User implements UserDetails{
 	}
 
 	public User(NewUserDto dto){
+		this.id = dto.getId();
 		this.username = dto.getUsername();
 		this.isPrivate = false;
 		this.connections = new HashMap<>();
 	}
 
-	public String getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-
 
 	public void setUsername(String username) {
 		this.username = username;

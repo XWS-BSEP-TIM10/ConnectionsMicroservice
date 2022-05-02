@@ -1,6 +1,5 @@
 package com.connections;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class ConnectionsApplication  implements CommandLineRunner {
 		}
 		User user1=new User();
 		user1.setUsername("pera");
-		user1.setUuid("pera");
+		user1.setId("pera");
 		user1.setConnections(new HashMap<>());
 		user1.setRoles(roles);
 		user1.setPrivate(true);
@@ -46,7 +45,7 @@ public class ConnectionsApplication  implements CommandLineRunner {
 
 		user1=new User();
 		user1.setUsername("kina");
-		user1.setUuid("kina");
+		user1.setId("kina");
 		user1.setRoles(roles);
 		user1.setPrivate(false);
 		user1.setConnections(new HashMap<>());
@@ -54,7 +53,7 @@ public class ConnectionsApplication  implements CommandLineRunner {
 
 		user1=new User();
 		user1.setUsername("marko");
-		user1.setUuid("marko");
+		user1.setId("marko");
 		user1.setRoles(roles);
 		user1.setPrivate(false);
 		user1.setConnections(new HashMap<>());
