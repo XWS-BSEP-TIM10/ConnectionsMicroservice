@@ -1,11 +1,16 @@
 package com.connections.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class ConnectionRequestDto {
-    private String id;
 
-    public ConnectionRequestDto() {}
+    @NotBlank
+    private String connectingId;
 
-    public String getId() {
-        return id;
+    public ConnectionRequestDto() {
+    }
+
+    public String getConnectingId() {
+        return connectingId;
     }
 }

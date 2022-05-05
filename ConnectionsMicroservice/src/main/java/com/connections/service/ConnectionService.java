@@ -1,21 +1,18 @@
 package com.connections.service;
 
-import java.util.List;
-
 import com.connections.exception.UserDoesNotExist;
 import com.connections.model.Connection;
-import com.connections.model.User;
+
+import java.util.List;
 
 public interface ConnectionService {
 
-    Connection sendConnectionRequest(String id) throws UserDoesNotExist;
+    Connection sendConnectionRequest(String initiatorId, String connectingId) throws UserDoesNotExist;
 
-    Connection approveConnectionRequest(String id) throws UserDoesNotExist;
+    Boolean respondConnectionRequest(String initiatorId, String connectingId, boolean approve) throws UserDoesNotExist;
 
-    Connection refuseConnectionRequest(String id) throws UserDoesNotExist;
-    
     List<String> getFollowing(String id);
-    
+
     List<String> getFollowers(String id);
 
 }

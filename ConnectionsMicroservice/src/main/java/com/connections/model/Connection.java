@@ -7,7 +7,6 @@ import org.springframework.data.annotation.Id;
 
 @RelationshipProperties
 public class Connection {
-
     @Id
     @GeneratedValue
     private Long id;
