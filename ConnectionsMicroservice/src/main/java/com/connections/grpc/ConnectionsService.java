@@ -38,7 +38,6 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
 
         List<String> connections = new ArrayList<String>();
         connections.addAll(connectionService.getFollowing(request.getId()));
-        connections.addAll(connectionService.getFollowers(request.getId()));
 
         ConnectionsResponseProto response = ConnectionsResponseProto.newBuilder()
                 .addAllConnections(connections)
