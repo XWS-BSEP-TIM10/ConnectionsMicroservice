@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> delete(@PathVariable String id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }

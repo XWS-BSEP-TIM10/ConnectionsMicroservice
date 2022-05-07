@@ -2,8 +2,12 @@ package com.connections.repository;
 
 import com.connections.model.User;
 import org.neo4j.springframework.data.repository.Neo4jRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepository extends Neo4jRepository<User, Long> {
+import java.util.Optional;
 
-    User findByUsername(String username);
+@Repository
+public interface UserRepository extends Neo4jRepository<User, String> {
+
+    Optional<User> findById(String id);
 }

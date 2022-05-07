@@ -4,6 +4,6 @@ import com.connections.model.User;
 
 public interface UserService {
     User save(User user);
-
-    void deleteById(Long id);
+    User findById(String id);
+    void deleteById(String id);
 }
