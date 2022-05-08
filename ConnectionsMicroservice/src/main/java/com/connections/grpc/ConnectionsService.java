@@ -51,9 +51,9 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
     @Override
     public void createConnection(CreateConnectionRequestProto request, StreamObserver<ConnectionResponseProto> responseObserver) {
         String initiatorId = request.getInitiatorId();
-        String connectingId = request.getConnectingId();
+        String receiverId = request.getReceiverId();
 
-        connectionService.sendConnectionRequest(initiatorId, connectingId);
+        connectionService.sendConnectionRequest(initiatorId, receiverId);
 
         ConnectionResponseProto response = ConnectionResponseProto.newBuilder()
                 .setStatus("Status 200").build();
@@ -66,10 +66,10 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
     @Override
     public void respondConnection(RespondConnectionRequestProto request, StreamObserver<ConnectionResponseProto> responseObserver) {
         String initiatorId = request.getInitiatorId();
-        String connectingId = request.getConnectingId();
+        String receiverId = request.getReceiverId();
         boolean approve = request.getApprove();
         try {
-            connectionService.respondConnectionRequest(initiatorId, connectingId, approve);
+            connectionService.respondConnectionRequest(initiatorId, receiverId, approve);
         } catch (UserDoesNotExist | NoPendingConnectionException ex) {
             ConnectionResponseProto response = ConnectionResponseProto.newBuilder()
                     .setStatus("Status 404").build();
