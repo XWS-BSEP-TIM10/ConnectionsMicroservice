@@ -52,7 +52,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         if (!connectionRepository.isPending(initiatorId, receiverId))
             throw new NoPendingConnectionException();
         String status = approve ? "CONNECTED" : "REFUSED";
-        connectionRepository.updateConnectionStatus(receiverId, initiatorId, status);
+        connectionRepository.updateConnectionStatus(initiatorId, receiverId, status);
         return true;
     }
 
