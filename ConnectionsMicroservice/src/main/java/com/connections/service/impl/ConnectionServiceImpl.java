@@ -27,32 +27,32 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     @Override
-    public Connection sendConnectionRequest(String initiatorId, String connectingId) throws UserDoesNotExist {
+    public Connection sendConnectionRequest(String initiatorId, String receiverId) throws UserDoesNotExist {
 
         User loggedUser = userService.findById(initiatorId);
-        User user = userService.findById(connectingId);
+        User user = userService.findById(receiverId);
 
         if (user == null || loggedUser == null) {
             throw new UserDoesNotExist();
         }
 
         ConnectionStatus status = user.getPrivate() ? ConnectionStatus.PENDING : ConnectionStatus.CONNECTED;
-        if (connectionRepository.isConnected(initiatorId, connectingId))
+        if (connectionRepository.isConnected(initiatorId, receiverId))
             throw new ConnectionAlreadyExistsException();
 
         return connectionRepository.saveConnection(loggedUser.getId(), user.getId(), status.toString());
     }
 
     @Override
-    public Boolean respondConnectionRequest(String initiatorId, String connectingId, boolean approve) throws UserDoesNotExist {
+    public Boolean respondConnectionRequest(String initiatorId, String receiverId, boolean approve) throws UserDoesNotExist {
         User loggedUser = userService.findById(initiatorId);
-        if (userService.findById(connectingId) == null || loggedUser == null) {
+        if (userService.findById(receiverId) == null || loggedUser == null) {
             throw new UserDoesNotExist();
         }
-        if (!connectionRepository.isPending(initiatorId, connectingId))
+        if (!connectionRepository.isPending(initiatorId, receiverId))
             throw new NoPendingConnectionException();
         String status = approve ? "CONNECTED" : "REFUSED";
-        connectionRepository.updateConnectionStatus(connectingId, initiatorId, status);
+        connectionRepository.updateConnectionStatus(receiverId, initiatorId, status);
         return true;
     }
 
