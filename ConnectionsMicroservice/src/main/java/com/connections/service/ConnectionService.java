@@ -2,6 +2,7 @@ package com.connections.service;
 
 import com.connections.exception.UserDoesNotExist;
 import com.connections.model.Connection;
+import com.connections.model.ConnectionStatus;
 
 import java.util.List;
 
@@ -14,5 +15,7 @@ public interface ConnectionService {
     List<String> getFollowing(String id);
 
     List<String> getFollowers(String id);
+
+    Connection getConnection(String initiatorId, String receiverId);
 
 }
