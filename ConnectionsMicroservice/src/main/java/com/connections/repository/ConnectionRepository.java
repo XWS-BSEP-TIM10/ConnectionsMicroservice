@@ -26,4 +26,7 @@ public interface ConnectionRepository extends Neo4jRepository<Connection, Long> 
     @Query("MATCH(u1:User {id:$0})-[c:CONNECTION {connectionStatus:'PENDING'}]->(u2:User {id:$1}) RETURN count(c) > 0")
     boolean isPending(String id1, String id2);
 
+    @Query("MATCH (u1:User {id: $0})-[r:CONNECTION]->(u2:User {id: $1}) RETURN r")
+    Connection getConnection(String initiatorId, String receiverId);
+
 }

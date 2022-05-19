@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ConnectionServiceImpl implements ConnectionService {
@@ -64,6 +65,11 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public List<String> getFollowers(String id) {
         return connectionRepository.findFollowers(id);
+    }
+
+    @Override
+    public Connection getConnection(String initiatorId, String receiverId) {
+        return connectionRepository.getConnection(initiatorId, receiverId);
     }
 
 

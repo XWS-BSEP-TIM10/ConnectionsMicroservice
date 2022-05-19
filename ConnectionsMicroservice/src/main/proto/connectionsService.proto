@@ -8,4 +8,5 @@ service ConnectionsGrpcService{
   rpc getConnections (ConnectionsProto) returns (ConnectionsResponseProto);
   rpc createConnection (CreateConnectionRequestProto) returns (ConnectionResponseProto);
   rpc respondConnection (RespondConnectionRequestProto) returns (ConnectionResponseProto);
+  rpc getConnectionStatus(ConnectionStatusProto) returns (ConnectionStatusResponseProto);
 }
