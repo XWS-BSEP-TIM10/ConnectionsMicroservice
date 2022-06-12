@@ -12,7 +12,7 @@ public class LoggerServiceImpl implements LoggerService {
 
     @Override
     public void connectionRequestSuccessfullySent(String initiatorId, String receiverId) {
-        logger.info("User with id: " + initiatorId + " successfully sent connecting request to user with id: " + receiverId);
+        logger.info("User with id: " + initiatorId + " successfully sent connection request to user with id: " + receiverId);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class LoggerServiceImpl implements LoggerService {
 
     @Override
     public void getFollowing(String userId) {
-        logger.info("User with id: " + userId + " has gotten following users");
+        logger.info("User with id: " + userId + " has gotten his following users");
     }
 
     @Override
@@ -47,7 +47,7 @@ public class LoggerServiceImpl implements LoggerService {
 
     @Override
     public void changeConnectionStatus(String initiatorId, String receiverId, String status) {
-        logger.info("User with id: " + initiatorId + " change status of connection with user with id: " + receiverId + " to: " + status);
+        logger.info("User with id: " + initiatorId + " changed status of connection with user with id: " + receiverId + " to: " + status);
     }
 
     @Override
@@ -57,11 +57,11 @@ public class LoggerServiceImpl implements LoggerService {
 
     @Override
     public void initiatorUserDoesNotExists(String initiatorId, String receiverId) {
-        logger.warn("User with id: " + initiatorId + " that does not exists tried to change status of connection with user with id: " + receiverId);
+        logger.warn("User with id: " + initiatorId + " that does not exist tried to change status of connection with user with id: " + receiverId);
     }
 
     @Override
     public void receiverUserDoesNotExists(String initiatorId, String receiverId) {
-        logger.warn("User with id: " + initiatorId + " tried to change connection status with user with id: " + receiverId + " that does not exists");
+        logger.warn("User with id: " + initiatorId + " tried to change connection status with user with id: " + receiverId + " that does not exist");
     }
 }
