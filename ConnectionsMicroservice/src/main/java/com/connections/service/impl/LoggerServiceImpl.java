@@ -12,56 +12,56 @@ public class LoggerServiceImpl implements LoggerService {
 
     @Override
     public void connectionRequestSuccessfullySent(String initiatorId, String receiverId) {
-        logger.info("User with id: " + initiatorId + " successfully sent connection request to user with id: " + receiverId);
+        logger.info("Connection request successfully sent. Initiator id: {} Receiver id: {}", initiatorId, receiverId);
     }
 
     @Override
     public void connectionAlreadyExists(String initiatorId, String receiverId) {
-        logger.warn("User with id: " + initiatorId + " already connected to user with id: " + receiverId + " tried to connect again");
+        logger.warn("User tried to connect with existing connection. Initiator id: {} Receiver id: {}", initiatorId, receiverId);
     }
 
     @Override
     public void connectingUserDoesNotExists(String initiatorId, String receiverId) {
-        logger.warn("User with id: " + initiatorId + " that does not exists tried to connect with user with id: " + receiverId);
+        logger.warn("User with id that does not exist tried to connect with another user. Initiator id: {} Receiver id: {}", initiatorId, receiverId);
     }
 
     @Override
     public void connectedUserDoesNotExists(String initiatorId, String receiverId) {
-        logger.warn("User with id: " + initiatorId + " tried to connect to user with id: " + receiverId + " that does not exists");
+        logger.warn("User tried to connect with user that does not exist. Initiator id: {} Receiver id: {} ", initiatorId, receiverId);
     }
 
     @Override
     public void getFollowers(String userId) {
-        logger.info("User with id: " + userId + " has gotten his followers");
+        logger.info("Followers successfully gotten. User id: ", userId);
     }
 
     @Override
     public void getFollowing(String userId) {
-        logger.info("User with id: " + userId + " has gotten his following users");
+        logger.info("Followers successfully gotten. User id: ", userId);
     }
 
     @Override
     public void getConnection(String initiatorId, String receiverId) {
-        logger.info("User with id: " + initiatorId + " checked connection status with user with id: " + receiverId);
+        logger.info("Connection status checked successfully. Initiator id: {} Receiver id: {} ", initiatorId, receiverId);
     }
 
     @Override
     public void changeConnectionStatus(String initiatorId, String receiverId, String status) {
-        logger.info("User with id: " + initiatorId + " changed status of connection with user with id: " + receiverId + " to: " + status);
+        logger.info("Connection status successfully changed to: {} Initiator id: {} ReceiverId: {}", status, initiatorId, receiverId);
     }
 
     @Override
     public void changeConnectionStatusFailed(String initiatorId, String receiverId) {
-        logger.warn("User with id: " + initiatorId + " tried to change status of connection that is not pending with user with id: " + receiverId);
+        logger.warn("Not pending connection status tried to be changed. Initiator id: {} Receiver id: {}", initiatorId, receiverId);
     }
 
     @Override
     public void initiatorUserDoesNotExists(String initiatorId, String receiverId) {
-        logger.warn("User with id: " + initiatorId + " that does not exist tried to change status of connection with user with id: " + receiverId);
+        logger.warn("User with id that does not exist tried to change connection status. Initiator id: {} Receiver id: {}", initiatorId, receiverId);
     }
 
     @Override
     public void receiverUserDoesNotExists(String initiatorId, String receiverId) {
-        logger.warn("User with id: " + initiatorId + " tried to change connection status with user with id: " + receiverId + " that does not exist");
+        logger.warn("User tried to change connection status with user that does not exist. Initiator id: {} Receiver id: {} ", initiatorId, receiverId);
     }
 }
