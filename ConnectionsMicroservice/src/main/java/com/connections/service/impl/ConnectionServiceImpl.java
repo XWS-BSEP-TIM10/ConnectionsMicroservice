@@ -19,8 +19,8 @@ import java.util.Map;
 @Service
 public class ConnectionServiceImpl implements ConnectionService {
 
-    private UserService userService;
-    private ConnectionRepository connectionRepository;
+    private final UserService userService;
+    private final ConnectionRepository connectionRepository;
     private final LoggerService loggerService;
 
     @Autowired

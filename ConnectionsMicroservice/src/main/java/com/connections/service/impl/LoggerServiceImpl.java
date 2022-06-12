@@ -27,22 +27,22 @@ public class LoggerServiceImpl implements LoggerService {
 
     @Override
     public void connectedUserDoesNotExists(String initiatorId, String receiverId) {
-        logger.warn("User tried to connect with user that does not exist. Initiator id: {} Receiver id: {} ", initiatorId, receiverId);
+        logger.warn("User tried to connect with user that does not exist. Initiator id: {} Receiver id: {}", initiatorId, receiverId);
     }
 
     @Override
     public void getFollowers(String userId) {
-        logger.info("Followers successfully gotten. User id: ", userId);
+        logger.info("Followers successfully gotten. User id: {}", userId);
     }
 
     @Override
     public void getFollowing(String userId) {
-        logger.info("Followers successfully gotten. User id: ", userId);
+        logger.info("Followers successfully gotten. User id: {}", userId);
     }
 
     @Override
     public void getConnection(String initiatorId, String receiverId) {
-        logger.info("Connection status checked successfully. Initiator id: {} Receiver id: {} ", initiatorId, receiverId);
+        logger.info("Connection status checked successfully. Initiator id: {} Receiver id: {}", initiatorId, receiverId);
     }
 
     @Override
@@ -62,6 +62,6 @@ public class LoggerServiceImpl implements LoggerService {
 
     @Override
     public void receiverUserDoesNotExists(String initiatorId, String receiverId) {
-        logger.warn("User tried to change connection status with user that does not exist. Initiator id: {} Receiver id: {} ", initiatorId, receiverId);
+        logger.warn("User tried to change connection status with user that does not exist. Initiator id: {} Receiver id: {}", initiatorId, receiverId);
     }
 }
