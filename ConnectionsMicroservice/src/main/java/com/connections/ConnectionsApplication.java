@@ -28,10 +28,8 @@ public class ConnectionsApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        //Role role = 
         List<Role> roles = roleService.findByName("ROLE_USER");
-        //roles.add(role);
-        if (roles.size() == 0) {
+        if (roles.isEmpty()) {
             roleService.save(new Role("ROLE_USER"));
         }
         User user1 = new User();

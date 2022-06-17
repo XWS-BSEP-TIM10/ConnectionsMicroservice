@@ -2,7 +2,6 @@ package com.connections.service;
 
 import com.connections.exception.UserDoesNotExist;
 import com.connections.model.Connection;
-import com.connections.model.ConnectionStatus;
 
 import java.util.List;
 

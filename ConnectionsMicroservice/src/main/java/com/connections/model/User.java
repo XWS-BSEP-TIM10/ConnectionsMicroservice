@@ -2,14 +2,6 @@ package com.connections.model;
 
 import com.connections.dto.NewUserDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-
 import org.neo4j.springframework.data.core.schema.Node;
 import org.neo4j.springframework.data.core.schema.Property;
 import org.neo4j.springframework.data.core.schema.Relationship;
@@ -18,73 +10,79 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Node("User")
-public class User implements UserDetails{
-	
-	private static final long serialVersionUID = 1L;
-	@Id
-	private String id;
+public class User implements UserDetails {
 
-	@Property
-	private Boolean isPrivate;
+    private static final long serialVersionUID = 1L;
+    @Id
+    private String id;
 
-	@Relationship(type = "HAS_ROLE", direction = Relationship.Direction.INCOMING)
-	private List<Role> roles;
+    @Property
+    private Boolean isPrivate;
 
-	@Relationship(type = "CONNECTED", direction = Relationship.Direction.INCOMING)
-	private Map<User, Connection> connections;
+    @Relationship(type = "HAS_ROLE", direction = Relationship.Direction.INCOMING)
+    private List<Role> roles;
 
-	public User() {
-		super();
-		this.connections = new HashMap<>();
-	}
+    @Relationship(type = "CONNECTED", direction = Relationship.Direction.INCOMING)
+    private Map<User, Connection> connections;
 
-	public User(String uuid, String username, Boolean isPrivate, List<Role> roles, Map<User, Connection> connections) {
-		this.id = uuid;
-		this.isPrivate = isPrivate;
-		this.roles = roles;
-		this.connections = connections;
-	}
+    public User() {
+        super();
+        this.connections = new HashMap<>();
+    }
 
-	public User(NewUserDto dto){
-		this.id = dto.getId();
-		this.isPrivate = false;
-		this.connections = new HashMap<>();
-	}
+    public User(String uuid, Boolean isPrivate, List<Role> roles, Map<User, Connection> connections) {
+        this.id = uuid;
+        this.isPrivate = isPrivate;
+        this.roles = roles;
+        this.connections = connections;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public User(NewUserDto dto) {
+        this.id = dto.getId();
+        this.isPrivate = false;
+        this.connections = new HashMap<>();
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setPrivate(Boolean aPrivate) {
-		isPrivate = aPrivate;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public Boolean getPrivate() {
-		return isPrivate;
-	}
+    public void setPrivate(Boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
 
-	public void setConnections(Map<User, Connection> connections) {
-		this.connections = connections;
-	}
+    public Boolean getPrivate() {
+        return isPrivate;
+    }
 
-	public Map<User, Connection> getConnections() {
-		return connections;
-	}
+    public void setConnections(Map<User, Connection> connections) {
+        this.connections = connections;
+    }
 
-	public List<Role> getRoles() {
-		return roles;
-	}
+    public Map<User, Connection> getConnections() {
+        return connections;
+    }
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
+    public List<Role> getRoles() {
+        return roles;
+    }
 
-	@Override
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    @Override
     public String getUsername() {
         return "";
     }
@@ -112,15 +110,15 @@ public class User implements UserDetails{
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<GrantedAuthority> authorities = new ArrayList<>();
-		for (Role role : this.getRoles()) {
-			authorities.add(new SimpleGrantedAuthority(role.getName()));
-		}
-		return authorities;
-	}
-    
-	@Override
-	public String getPassword() {
-		return "";
-	}
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : this.getRoles()) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return "";
+    }
 }
