@@ -4,11 +4,15 @@ import com.connections.model.Role;
 import com.connections.model.User;
 import com.connections.service.RoleService;
 import com.connections.service.UserService;
+import io.nats.client.Connection;
+import io.nats.client.Dispatcher;
+import io.nats.client.Nats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,6 +31,21 @@ public class ConnectionsApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+        try {
+            // connect to nats server
+            Connection nats = Nats.connect();
+            Dispatcher dispatcher = nats.createDispatcher(msg -> {
+            });
+
+            // subscribes to nats.demo.service channel
+            dispatcher.subscribe("nats.demo.service", msg -> {
+                System.out.println("Received : " + new String(msg.getData()));
+                nats.publish(msg.getReplyTo(), "Hello Publisher from Connections Microservice!".getBytes());
+            });
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
 
         List<Role> roles = roleService.findByName("ROLE_USER");
         if (roles.isEmpty()) {
