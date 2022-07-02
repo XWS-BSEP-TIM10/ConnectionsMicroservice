@@ -35,7 +35,7 @@ public class MessageQueueService {
         Dispatcher dispatcher = nats.createDispatcher(msg -> {
         });
 
-        dispatcher.subscribe("nats.demo.service", msg -> {
+        dispatcher.subscribe("nats.connections", msg -> {
 
             Gson gson = new Gson();
             String json = new String(msg.getData(), StandardCharsets.UTF_8);
@@ -44,8 +44,9 @@ public class MessageQueueService {
 
             User user = service.save(new User(newUserDTO));
             ConnectionsResponseDto responseDto;
+
             if (user == null)
-                responseDto = new ConnectionsResponseDto(false, "failed");
+                responseDto = new ConnectionsResponseDto(false, "failed", newUserDTO.getUuid());
             else
                 responseDto = new ConnectionsResponseDto(user.getId(), true, "sucess");
 

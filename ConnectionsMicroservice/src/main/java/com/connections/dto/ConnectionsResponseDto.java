@@ -5,6 +5,7 @@ public class ConnectionsResponseDto {
     private String id;
     private boolean success;
     private String message;
+    private final String service = "Connections";
 
     public ConnectionsResponseDto() {
     }
@@ -15,9 +16,14 @@ public class ConnectionsResponseDto {
         this.message = message;
     }
 
-    public ConnectionsResponseDto(boolean success, String message) {
+    public ConnectionsResponseDto(boolean success, String message, String id) {
         this.success = success;
         this.message = message;
+        this.id = id;
+    }
+
+    public String getService() {
+        return service;
     }
 
     public String getId() {

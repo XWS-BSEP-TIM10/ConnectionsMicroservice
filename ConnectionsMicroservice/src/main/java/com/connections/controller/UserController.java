@@ -24,7 +24,7 @@ public class UserController {
     public ResponseEntity<ConnectionsResponseDto> register(@RequestBody NewUserDto dto) {
         User user = service.save(new User(dto));
         if (user == null)
-            return ResponseEntity.ok(new ConnectionsResponseDto(false, "failed"));
+            return ResponseEntity.ok(new ConnectionsResponseDto(false, "failed", dto.getUuid()));
         return ResponseEntity.ok(new ConnectionsResponseDto(user.getId(), true, "sucess"));
     }
 
