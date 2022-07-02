@@ -6,7 +6,7 @@ public class NewUserDto {
 
     private String username;
 
-    public NewUserDto() {}
+    public NewUserDto() {/*dto*/}
 
     public String getId() {
         return id;

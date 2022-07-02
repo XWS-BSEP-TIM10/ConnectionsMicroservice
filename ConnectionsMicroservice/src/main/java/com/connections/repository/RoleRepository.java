@@ -1,15 +1,13 @@
 package com.connections.repository;
 
-import java.util.List;
-
+import com.connections.model.Role;
 import org.neo4j.springframework.data.repository.Neo4jRepository;
-import org.neo4j.springframework.data.repository.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.connections.model.Role;
+import java.util.List;
 
 @Repository
-public interface RoleRepository extends Neo4jRepository<Role, Long>{
-	
+public interface RoleRepository extends Neo4jRepository<Role, Long> {
+
     List<Role> findByName(String name);
 }

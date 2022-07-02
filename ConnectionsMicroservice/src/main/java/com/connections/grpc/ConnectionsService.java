@@ -3,13 +3,18 @@ package com.connections.grpc;
 import com.connections.exception.NoPendingConnectionException;
 import com.connections.exception.UserDoesNotExist;
 import com.connections.model.Connection;
-import com.connections.repository.ConnectionRepository;
 import com.connections.service.ConnectionService;
-import com.connections.service.UserService;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
-import proto.*;
+import proto.ConnectionResponseProto;
+import proto.ConnectionStatusProto;
+import proto.ConnectionStatusResponseProto;
+import proto.ConnectionsGrpcServiceGrpc;
+import proto.ConnectionsProto;
+import proto.ConnectionsResponseProto;
+import proto.CreateConnectionRequestProto;
+import proto.RespondConnectionRequestProto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +22,14 @@ import java.util.List;
 @GrpcService
 public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGrpcServiceImplBase {
 
-    private ConnectionService connectionService;
-    private UserService userService;
-    private ConnectionRepository repository;
+    private final ConnectionService connectionService;
+    private static final String OK_STATUS = "Status 200";
+
 
     @Autowired
-    public ConnectionsService(ConnectionService connectionService, UserService userService, ConnectionRepository repository) {
+    public ConnectionsService(ConnectionService connectionService) {
         this.connectionService = connectionService;
-        this.userService = userService;
-        this.repository = repository;
+
     }
 
     @Override
@@ -35,7 +39,7 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
 
         ConnectionsResponseProto response = ConnectionsResponseProto.newBuilder()
                 .addAllConnections(connections)
-                .setStatus("Status 200").build();
+                .setStatus(OK_STATUS).build();
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
@@ -50,7 +54,7 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
         connectionService.sendConnectionRequest(initiatorId, receiverId);
 
         ConnectionResponseProto response = ConnectionResponseProto.newBuilder()
-                .setStatus("Status 200").build();
+                .setStatus(OK_STATUS).build();
 
 
         responseObserver.onNext(response);
@@ -71,7 +75,7 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
             responseObserver.onCompleted();
         }
         ConnectionResponseProto response = ConnectionResponseProto.newBuilder()
-                .setStatus("Status 200").build();
+                .setStatus(OK_STATUS).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
@@ -80,13 +84,13 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
     public void getConnectionStatus(ConnectionStatusProto request, StreamObserver<ConnectionStatusResponseProto> responseObserver) {
         Connection connection = connectionService.getConnection(request.getInitiatorId(), request.getReceiverId());
         ConnectionStatusResponseProto connectionStatusResponseProto;
-        if(connection == null)
+        if (connection == null)
             connectionStatusResponseProto = ConnectionStatusResponseProto.newBuilder().setConnectionStatus("")
-                                                .setStatus("Status 200").build();
+                    .setStatus(OK_STATUS).build();
         else
             connectionStatusResponseProto = ConnectionStatusResponseProto.newBuilder()
-                .setConnectionStatus(connection.getConnectionStatus().toString())
-                .setStatus("Status 200").build();
+                    .setConnectionStatus(connection.getConnectionStatus().toString())
+                    .setStatus(OK_STATUS).build();
         responseObserver.onNext(connectionStatusResponseProto);
         responseObserver.onCompleted();
     }

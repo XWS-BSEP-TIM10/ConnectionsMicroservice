@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ConnectionServiceImpl implements ConnectionService {
@@ -46,7 +45,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             throw new UserDoesNotExist();
         }
 
-        ConnectionStatus status = user.getPrivate() ? ConnectionStatus.PENDING : ConnectionStatus.CONNECTED;
+        ConnectionStatus status = Boolean.TRUE.equals(user.getPrivate()) ? ConnectionStatus.PENDING : ConnectionStatus.CONNECTED;
         if (connectionRepository.isConnected(initiatorId, receiverId)) {
             loggerService.connectionAlreadyExists(initiatorId, receiverId);
             throw new ConnectionAlreadyExistsException();
