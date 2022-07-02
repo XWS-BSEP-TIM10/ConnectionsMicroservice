@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @SpringBootApplication
 public class ConnectionsApplication implements CommandLineRunner {
@@ -38,11 +39,11 @@ public class ConnectionsApplication implements CommandLineRunner {
             Dispatcher dispatcher = nats.createDispatcher(msg -> {
             });
 
-            // subscribes to nats.demo.service channel
             dispatcher.subscribe("nats.demo.service", msg -> {
                 System.out.println("Received : " + new String(msg.getData()));
-                nats.publish(msg.getReplyTo(), "Hello Publisher from Connections Microservice!".getBytes());
+                nats.publish("nats.demo.reply", "Message received, Connections".getBytes());
             });
+
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
