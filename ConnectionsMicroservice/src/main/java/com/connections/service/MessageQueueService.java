@@ -48,7 +48,7 @@ public class MessageQueueService {
             if (user == null)
                 responseDto = new ConnectionsResponseDto(false, "failed", newUserDTO.getUuid());
             else
-                responseDto = new ConnectionsResponseDto(user.getId(), true, "sucess");
+                responseDto = new ConnectionsResponseDto(user.getId(), true, "success");
 
             publish(responseDto);
         });
