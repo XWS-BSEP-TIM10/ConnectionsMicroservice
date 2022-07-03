@@ -24,7 +24,12 @@ public class MessageQueueService {
     public MessageQueueService(UserService service) {
         this.service = service;
         try {
-            this.nats = Nats.connect();
+            String natsURI = System.getenv("NATS_URI") == null ? "localhost" : System.getenv("NATS_URI");
+            if (natsURI.equals("localhost")) {
+                nats = Nats.connect();
+            } else {
+                nats = Nats.connect(natsURI);
+            }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
