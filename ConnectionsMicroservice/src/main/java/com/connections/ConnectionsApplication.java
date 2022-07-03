@@ -26,7 +26,7 @@ public class ConnectionsApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
 
         List<Role> roles = roleService.findByName("ROLE_USER");
         if (roles.isEmpty()) {

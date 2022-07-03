@@ -1,14 +1,11 @@
 package com.connections.model;
 
 import com.connections.dto.NewUserDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.neo4j.springframework.data.core.schema.Node;
 import org.neo4j.springframework.data.core.schema.Property;
 import org.neo4j.springframework.data.core.schema.Relationship;
 import org.springframework.data.annotation.Id;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +39,7 @@ public class User {
     }
 
     public User(NewUserDto dto) {
-        this.id = dto.getId();
+        this.id = dto.getUuid();
         this.isPrivate = false;
         this.connections = new HashMap<>();
     }
