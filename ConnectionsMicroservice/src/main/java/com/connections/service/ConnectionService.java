@@ -17,4 +17,6 @@ public interface ConnectionService {
 
     Connection getConnection(String initiatorId, String receiverId);
 
+    Connection createBlock(String initiatorId, String receiverId);
+
 }

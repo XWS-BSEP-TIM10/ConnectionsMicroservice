@@ -26,6 +26,7 @@ public class User {
     @Relationship(type = "CONNECTED", direction = Relationship.Direction.INCOMING)
     private Map<User, Connection> connections;
 
+
     public User() {
         super();
         this.connections = new HashMap<>();
@@ -76,5 +77,4 @@ public class User {
         this.roles = roles;
     }
 
-  
 }

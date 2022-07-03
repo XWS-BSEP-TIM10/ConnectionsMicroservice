@@ -1,5 +1,6 @@
 package com.connections.grpc;
 
+import com.connections.exception.BlockAlreadyExistsException;
 import com.connections.exception.NoPendingConnectionException;
 import com.connections.exception.UserDoesNotExist;
 import com.connections.model.Connection;
@@ -7,12 +8,14 @@ import com.connections.service.ConnectionService;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
+import proto.BlockResponseProto;
 import proto.ConnectionResponseProto;
 import proto.ConnectionStatusProto;
 import proto.ConnectionStatusResponseProto;
 import proto.ConnectionsGrpcServiceGrpc;
 import proto.ConnectionsProto;
 import proto.ConnectionsResponseProto;
+import proto.CreateBlockRequestProto;
 import proto.CreateConnectionRequestProto;
 import proto.RespondConnectionRequestProto;
 
@@ -24,6 +27,7 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
 
     private final ConnectionService connectionService;
     private static final String OK_STATUS = "Status 200";
+    private static final String NOT_FOUND_STATUS = "Status 404";
 
 
     @Autowired
@@ -92,6 +96,19 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
                     .setConnectionStatus(connection.getConnectionStatus().toString())
                     .setStatus(OK_STATUS).build();
         responseObserver.onNext(connectionStatusResponseProto);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void createBlock(CreateBlockRequestProto request, StreamObserver<BlockResponseProto> responseObserver) {
+        BlockResponseProto blockResponseProto;
+        try {
+            connectionService.createBlock(request.getInitiatorId(), request.getReceiverId());
+            blockResponseProto = BlockResponseProto.newBuilder().setStatus(OK_STATUS).build();
+        } catch (UserDoesNotExist | BlockAlreadyExistsException exception) {
+            blockResponseProto = BlockResponseProto.newBuilder().setStatus(NOT_FOUND_STATUS).build();
+        }
+        responseObserver.onNext(blockResponseProto);
         responseObserver.onCompleted();
     }
 }

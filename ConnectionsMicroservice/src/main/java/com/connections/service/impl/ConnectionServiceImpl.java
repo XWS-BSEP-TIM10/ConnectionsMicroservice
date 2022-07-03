@@ -1,5 +1,6 @@
 package com.connections.service.impl;
 
+import com.connections.exception.BlockAlreadyExistsException;
 import com.connections.exception.ConnectionAlreadyExistsException;
 import com.connections.exception.NoPendingConnectionException;
 import com.connections.exception.UserDoesNotExist;
@@ -92,6 +93,20 @@ public class ConnectionServiceImpl implements ConnectionService {
     public Connection getConnection(String initiatorId, String receiverId) {
         loggerService.getConnection(initiatorId, receiverId);
         return connectionRepository.getConnection(initiatorId, receiverId);
+    }
+
+    @Override
+    public Connection createBlock(String initiatorId, String receiverId) {
+        User loggedUser = userService.findById(initiatorId);
+        User user = userService.findById(receiverId);
+        if (loggedUser == null || user == null)
+            throw new UserDoesNotExist();
+        if (connectionRepository.isBlocked(initiatorId, receiverId))
+            throw new BlockAlreadyExistsException();
+        connectionRepository.deleteConnection(initiatorId, receiverId);
+        if (!connectionRepository.isBlocked(receiverId, initiatorId))
+            connectionRepository.deleteConnection(receiverId, initiatorId);
+        return connectionRepository.saveBlock(initiatorId, receiverId);
     }
 
 
