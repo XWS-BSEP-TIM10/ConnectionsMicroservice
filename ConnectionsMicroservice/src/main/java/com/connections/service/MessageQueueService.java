@@ -2,6 +2,7 @@ package com.connections.service;
 
 import com.connections.dto.ConnectionsResponseDto;
 import com.connections.dto.NewUserDto;
+import com.connections.dto.UpdateUserStatusDTO;
 import com.connections.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -56,6 +57,14 @@ public class MessageQueueService {
                 responseDto = new ConnectionsResponseDto(user.getId(), true, "success");
 
             publish(responseDto);
+        });
+
+        dispatcher.subscribe("nats.update.user.connections", msg -> {
+
+            Gson gson = new Gson();
+            String json = new String(msg.getData(), StandardCharsets.UTF_8);
+            UpdateUserStatusDTO updateUserStatusDTO = gson.fromJson(json, UpdateUserStatusDTO.class);
+            service.updateStatus(updateUserStatusDTO.getId(), !updateUserStatusDTO.isProfilePublic());
         });
     }
 

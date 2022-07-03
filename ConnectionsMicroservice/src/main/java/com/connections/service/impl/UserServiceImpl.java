@@ -1,5 +1,6 @@
 package com.connections.service.impl;
 
+import com.connections.exception.UserDoesNotExist;
 import com.connections.model.User;
 import com.connections.repository.UserRepository;
 import com.connections.service.RoleService;
@@ -32,5 +33,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(String id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateStatus(String id, boolean isPrivate) {
+        User user = userRepository.findById(id).orElseThrow(UserDoesNotExist::new);
+        user.setPrivate(isPrivate);
+        userRepository.save(user);
     }
 }
