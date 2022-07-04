@@ -4,6 +4,7 @@ import com.connections.exception.BlockAlreadyExistsException;
 import com.connections.exception.ConnectionAlreadyExistsException;
 import com.connections.exception.NoPendingConnectionException;
 import com.connections.exception.UserDoesNotExist;
+import com.connections.exception.UserIsBlockedException;
 import com.connections.model.Connection;
 import com.connections.model.ConnectionStatus;
 import com.connections.model.User;
@@ -47,6 +48,9 @@ public class ConnectionServiceImpl implements ConnectionService {
             throw new UserDoesNotExist();
         }
 
+        if (connectionRepository.isBlocked(receiverId, initiatorId))
+            throw new UserIsBlockedException();
+
         ConnectionStatus status = Boolean.TRUE.equals(user.getPrivate()) ? ConnectionStatus.PENDING : ConnectionStatus.CONNECTED;
         if (connectionRepository.isConnected(initiatorId, receiverId)) {
             loggerService.connectionAlreadyExists(initiatorId, receiverId);
@@ -72,9 +76,13 @@ public class ConnectionServiceImpl implements ConnectionService {
             loggerService.changeConnectionStatusFailed(initiatorId, receiverId);
             throw new NoPendingConnectionException();
         }
-        String status = approve ? "CONNECTED" : "REFUSED";
-        loggerService.changeConnectionStatus(initiatorId, receiverId, status);
-        connectionRepository.updateConnectionStatus(initiatorId, receiverId, status);
+        if (approve) {
+            loggerService.changeConnectionStatus(initiatorId, receiverId, "CONNECTED");
+            connectionRepository.updateConnectionStatus(initiatorId, receiverId, "CONNECTED");
+        } else {
+            loggerService.changeConnectionStatus(initiatorId, receiverId, "REFUSED");
+            connectionRepository.deleteConnection(initiatorId, receiverId);
+        }
         return true;
     }
 
