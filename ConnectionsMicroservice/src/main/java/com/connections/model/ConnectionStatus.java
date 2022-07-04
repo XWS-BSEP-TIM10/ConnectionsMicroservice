@@ -3,5 +3,6 @@ package com.connections.model;
 public enum ConnectionStatus {
     PENDING,
     CONNECTED,
-    REFUSED
+    REFUSED,
+    BLOCKED
 }

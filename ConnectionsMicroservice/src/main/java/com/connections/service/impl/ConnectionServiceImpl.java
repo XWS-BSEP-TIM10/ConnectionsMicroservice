@@ -1,8 +1,10 @@
 package com.connections.service.impl;
 
+import com.connections.exception.BlockAlreadyExistsException;
 import com.connections.exception.ConnectionAlreadyExistsException;
 import com.connections.exception.NoPendingConnectionException;
 import com.connections.exception.UserDoesNotExist;
+import com.connections.exception.UserIsBlockedException;
 import com.connections.model.Connection;
 import com.connections.model.ConnectionStatus;
 import com.connections.model.User;
@@ -13,6 +15,7 @@ import com.connections.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,6 +48,9 @@ public class ConnectionServiceImpl implements ConnectionService {
             throw new UserDoesNotExist();
         }
 
+        if (connectionRepository.isBlocked(receiverId, initiatorId))
+            throw new UserIsBlockedException();
+
         ConnectionStatus status = Boolean.TRUE.equals(user.getPrivate()) ? ConnectionStatus.PENDING : ConnectionStatus.CONNECTED;
         if (connectionRepository.isConnected(initiatorId, receiverId)) {
             loggerService.connectionAlreadyExists(initiatorId, receiverId);
@@ -70,9 +76,13 @@ public class ConnectionServiceImpl implements ConnectionService {
             loggerService.changeConnectionStatusFailed(initiatorId, receiverId);
             throw new NoPendingConnectionException();
         }
-        String status = approve ? "CONNECTED" : "REFUSED";
-        loggerService.changeConnectionStatus(initiatorId, receiverId, status);
-        connectionRepository.updateConnectionStatus(initiatorId, receiverId, status);
+        if (approve) {
+            loggerService.changeConnectionStatus(initiatorId, receiverId, "CONNECTED");
+            connectionRepository.updateConnectionStatus(initiatorId, receiverId, "CONNECTED");
+        } else {
+            loggerService.changeConnectionStatus(initiatorId, receiverId, "REFUSED");
+            connectionRepository.deleteConnection(initiatorId, receiverId);
+        }
         return true;
     }
 
@@ -92,6 +102,35 @@ public class ConnectionServiceImpl implements ConnectionService {
     public Connection getConnection(String initiatorId, String receiverId) {
         loggerService.getConnection(initiatorId, receiverId);
         return connectionRepository.getConnection(initiatorId, receiverId);
+    }
+
+    @Override
+    public Connection createBlock(String initiatorId, String receiverId) {
+        User loggedUser = userService.findById(initiatorId);
+        User user = userService.findById(receiverId);
+        if (loggedUser == null || user == null)
+            throw new UserDoesNotExist();
+        if (connectionRepository.isBlocked(initiatorId, receiverId))
+            throw new BlockAlreadyExistsException();
+        connectionRepository.deleteConnection(initiatorId, receiverId);
+        if (!connectionRepository.isBlocked(receiverId, initiatorId))
+            connectionRepository.deleteConnection(receiverId, initiatorId);
+        return connectionRepository.saveBlock(initiatorId, receiverId);
+    }
+
+    @Override
+    public List<String> getRecommendations(String userId) {
+        List<String> recommendationIds = new ArrayList<String>();
+        for (User user : connectionRepository.findSecondLevelConnections(userId)) {
+            if (!connectionRepository.isConnected(user.getId(), userId) && !connectionRepository.isPending(user.getId(), userId))
+                recommendationIds.add(user.getId());
+        }
+        return recommendationIds;
+    }
+
+    @Override
+    public List<String> getPending(String userId) {
+        return connectionRepository.getPending(userId);
     }
 
 

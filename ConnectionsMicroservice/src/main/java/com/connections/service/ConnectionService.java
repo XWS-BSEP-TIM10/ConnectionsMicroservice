@@ -17,4 +17,11 @@ public interface ConnectionService {
 
     Connection getConnection(String initiatorId, String receiverId);
 
+    Connection createBlock(String initiatorId, String receiverId);
+
+    List<String> getRecommendations(String userId);
+
+    List<String> getPending(String userId);
+
+
 }

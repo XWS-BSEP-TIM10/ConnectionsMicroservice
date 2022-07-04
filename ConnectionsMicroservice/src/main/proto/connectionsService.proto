@@ -6,7 +6,10 @@ import "connections.proto";
 
 service ConnectionsGrpcService{
   rpc getConnections (ConnectionsProto) returns (ConnectionsResponseProto);
-  rpc createConnection (CreateConnectionRequestProto) returns (ConnectionResponseProto);
+  rpc createConnection (CreateConnectionRequestProto) returns (CreateConnectionResponseProto);
   rpc respondConnection (RespondConnectionRequestProto) returns (ConnectionResponseProto);
   rpc getConnectionStatus(ConnectionStatusProto) returns (ConnectionStatusResponseProto);
+  rpc createBlock (CreateBlockRequestProto) returns (BlockResponseProto);
+  rpc getRecommendations(RecommendationsProto) returns (RecommendationsResponseProto);
+  rpc getPending(PendingRequestProto) returns (PendingResponseProto);
 }
