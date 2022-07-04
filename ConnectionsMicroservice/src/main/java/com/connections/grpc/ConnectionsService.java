@@ -18,6 +18,7 @@ import proto.ConnectionsResponseProto;
 import proto.CreateBlockRequestProto;
 import proto.CreateConnectionRequestProto;
 import proto.CreateConnectionResponseProto;
+import proto.MutualsResponseProto;
 import proto.PendingRequestProto;
 import proto.PendingResponseProto;
 import proto.RecommendationsProto;
@@ -26,6 +27,7 @@ import proto.RespondConnectionRequestProto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @GrpcService
 public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGrpcServiceImplBase {
@@ -137,5 +139,18 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
                 .build();
         responseObserver.onNext(pendingResponseProto);
         responseObserver.onCompleted();
+    }
+    @Override
+    public void getMutuals(ConnectionsProto request, StreamObserver<MutualsResponseProto> responseObserver) {
+    	List<String> followers = connectionService.getFollowers(request.getId());
+    	List<String> following = connectionService.getFollowing(request.getId());
+    	List<String> intersect = followers.stream()
+                .filter(following::contains)
+                .collect(Collectors.toList());
+    	MutualsResponseProto mutualsResponseProto = MutualsResponseProto.newBuilder()
+                 .addAllUserId(intersect)
+                 .build();
+         responseObserver.onNext(mutualsResponseProto);
+         responseObserver.onCompleted();
     }
 }
