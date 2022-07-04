@@ -1,11 +1,11 @@
 package com.connections.repository;
 
 import com.connections.model.Connection;
+import com.connections.model.User;
 import org.neo4j.springframework.data.repository.Neo4jRepository;
 import org.neo4j.springframework.data.repository.query.Query;
 
 import java.util.List;
-import com.connections.model.*;
 
 public interface ConnectionRepository extends Neo4jRepository<Connection, Long> {
 
@@ -20,6 +20,9 @@ public interface ConnectionRepository extends Neo4jRepository<Connection, Long> 
 
     @Query("MATCH(f:User)-[:CONNECTION {connectionStatus:'CONNECTED'}]->(User {id:$0}) RETURN f.id")
     List<String> findFollowers(String id);
+
+    @Query("MATCH(f:User)-[:CONNECTION {connectionStatus:'PENDING'}]->(User {id:$0}) RETURN f.id")
+    List<String> getPending(String id);
 
     @Query("MATCH(u1:User {id:$0})-[c:CONNECTION]->(u2:User {id:$1}) RETURN count(c) > 0")
     boolean isConnected(String id1, String id2);

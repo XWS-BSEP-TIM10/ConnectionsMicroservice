@@ -11,4 +11,5 @@ service ConnectionsGrpcService{
   rpc getConnectionStatus(ConnectionStatusProto) returns (ConnectionStatusResponseProto);
   rpc createBlock (CreateBlockRequestProto) returns (BlockResponseProto);
   rpc getRecommendations(RecommendationsProto) returns (RecommendationsResponseProto);
+  rpc getPending(PendingRequestProto) returns (PendingResponseProto);
 }

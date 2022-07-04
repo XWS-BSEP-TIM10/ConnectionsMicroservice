@@ -13,7 +13,6 @@ import com.connections.service.LoggerService;
 import com.connections.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.connections.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,11 +113,16 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public List<String> getRecommendations(String userId) {
         List<String> recommendationIds = new ArrayList<String>();
-        for(User user : connectionRepository.findSecondLevelConnections(userId)){
-            if(!connectionRepository.isConnected(user.getId(), userId) && !connectionRepository.isPending(user.getId(), userId))
+        for (User user : connectionRepository.findSecondLevelConnections(userId)) {
+            if (!connectionRepository.isConnected(user.getId(), userId) && !connectionRepository.isPending(user.getId(), userId))
                 recommendationIds.add(user.getId());
         }
         return recommendationIds;
+    }
+
+    @Override
+    public List<String> getPending(String userId) {
+        return connectionRepository.getPending(userId);
     }
 
 

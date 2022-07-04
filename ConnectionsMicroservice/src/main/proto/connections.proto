@@ -58,3 +58,11 @@ message RecommendationsProto{
 message RecommendationsResponseProto{
   repeated string userId = 2;
 }
+
+message PendingRequestProto{
+  string userId = 1;
+}
+
+message PendingResponseProto{
+  repeated string userId = 2;
+}
