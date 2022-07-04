@@ -18,6 +18,8 @@ import proto.ConnectionsResponseProto;
 import proto.CreateBlockRequestProto;
 import proto.CreateConnectionRequestProto;
 import proto.RespondConnectionRequestProto;
+import proto.*;
+import com.connections.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,6 +111,14 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
             blockResponseProto = BlockResponseProto.newBuilder().setStatus(NOT_FOUND_STATUS).build();
         }
         responseObserver.onNext(blockResponseProto);
+    }
+
+    @Override
+    public void getRecommendations(RecommendationsProto request, StreamObserver<RecommendationsResponseProto> responseObserver) {
+        RecommendationsResponseProto recommendationsResponseProto = RecommendationsResponseProto.newBuilder()
+                .addAllUserId(connectionService.getRecommendations(request.getUserId()))
+                .build();
+        responseObserver.onNext(recommendationsResponseProto);
         responseObserver.onCompleted();
     }
 }

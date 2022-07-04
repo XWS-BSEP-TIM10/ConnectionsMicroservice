@@ -5,6 +5,7 @@ import org.neo4j.springframework.data.repository.Neo4jRepository;
 import org.neo4j.springframework.data.repository.query.Query;
 
 import java.util.List;
+import com.connections.model.*;
 
 public interface ConnectionRepository extends Neo4jRepository<Connection, Long> {
 
@@ -37,5 +38,8 @@ public interface ConnectionRepository extends Neo4jRepository<Connection, Long> 
 
     @Query("MATCH (u1:User {id: $0})-[r:CONNECTION]->(u2:User {id: $1}) DELETE r")
     void deleteConnection(String initiatorId, String receiverId);
+
+    @Query("MATCH (:User {id: $0})-[:CONNECTION*2 {connectionStatus: 'CONNECTED'}]->(u:User) RETURN DISTINCT u")
+    List<User> findSecondLevelConnections(String username);
 
 }
