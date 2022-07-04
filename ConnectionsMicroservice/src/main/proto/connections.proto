@@ -42,7 +42,6 @@ message ConnectionStatusResponseProto {
   string status = 2;
 }
 
-
 message CreateBlockRequestProto {
   string initiatorId = 1;
   string receiverId = 2;
@@ -50,4 +49,12 @@ message CreateBlockRequestProto {
 
 message BlockResponseProto {
   string status = 1;
+}
+
+message RecommendationsProto{
+  string userId = 1;
+}
+
+message RecommendationsResponseProto{
+  repeated string userId = 2;
 }

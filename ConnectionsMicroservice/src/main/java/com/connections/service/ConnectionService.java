@@ -4,6 +4,7 @@ import com.connections.exception.UserDoesNotExist;
 import com.connections.model.Connection;
 
 import java.util.List;
+import com.connections.model.*;
 
 public interface ConnectionService {
 
@@ -18,5 +19,8 @@ public interface ConnectionService {
     Connection getConnection(String initiatorId, String receiverId);
 
     Connection createBlock(String initiatorId, String receiverId);
+
+    List<String> getRecommendations(String userId);
+
 
 }
