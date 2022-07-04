@@ -17,6 +17,7 @@ import proto.ConnectionsProto;
 import proto.ConnectionsResponseProto;
 import proto.CreateBlockRequestProto;
 import proto.CreateConnectionRequestProto;
+import proto.CreateConnectionResponseProto;
 import proto.RespondConnectionRequestProto;
 
 import java.util.ArrayList;
@@ -51,16 +52,16 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
     }
 
     @Override
-    public void createConnection(CreateConnectionRequestProto request, StreamObserver<ConnectionResponseProto> responseObserver) {
+    public void createConnection(CreateConnectionRequestProto request, StreamObserver<CreateConnectionResponseProto> responseObserver) {
         String initiatorId = request.getInitiatorId();
         String receiverId = request.getReceiverId();
 
-        connectionService.sendConnectionRequest(initiatorId, receiverId);
+        Connection connection = connectionService.sendConnectionRequest(initiatorId, receiverId);
 
-        ConnectionResponseProto response = ConnectionResponseProto.newBuilder()
-                .setStatus(OK_STATUS).build();
-
-
+        CreateConnectionResponseProto response = CreateConnectionResponseProto.newBuilder()
+                .setStatus(OK_STATUS)
+                .setConnectionStatus(connection.getConnectionStatus().toString())
+                .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }

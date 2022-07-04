@@ -17,6 +17,11 @@ message CreateConnectionRequestProto {
   string receiverId = 2;
 }
 
+message CreateConnectionResponseProto {
+  string status = 1;
+  string connectionStatus = 2;
+}
+
 message RespondConnectionRequestProto {
   string initiatorId = 1;
   string receiverId = 2;
