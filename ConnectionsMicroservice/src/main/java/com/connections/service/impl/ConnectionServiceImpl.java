@@ -121,8 +121,8 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public List<String> getRecommendations(String userId) {
         List<String> recommendationIds = new ArrayList<String>();
-        for (User user : connectionRepository.findSecondLevelConnections(userId)) {
-            if (!connectionRepository.isConnected(user.getId(), userId) && !connectionRepository.isPending(user.getId(), userId))
+        for(User user : connectionRepository.findSecondLevelConnections(userId)){
+            if(connectionRepository.getConnection(userId, user.getId()) == null)
                 recommendationIds.add(user.getId());
         }
         return recommendationIds;
