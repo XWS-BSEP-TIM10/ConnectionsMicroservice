@@ -153,4 +153,18 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
          responseObserver.onNext(mutualsResponseProto);
          responseObserver.onCompleted();
     }
+    
+    @Override
+    public void getFollowers(ConnectionsProto request, StreamObserver<ConnectionsResponseProto> responseObserver) {
+
+        List<String> connections = new ArrayList<>(connectionService.getFollowers(request.getId()));
+
+        ConnectionsResponseProto response = ConnectionsResponseProto.newBuilder()
+                .addAllConnections(connections)
+                .setStatus(OK_STATUS).build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+
+    }
 }
