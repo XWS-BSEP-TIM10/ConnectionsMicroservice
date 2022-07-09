@@ -4,26 +4,13 @@ import com.connections.exception.BlockAlreadyExistsException;
 import com.connections.exception.NoPendingConnectionException;
 import com.connections.exception.UserDoesNotExist;
 import com.connections.model.Connection;
+import com.connections.model.Event;
 import com.connections.service.ConnectionService;
+import com.connections.service.EventService;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
-import proto.BlockResponseProto;
-import proto.ConnectionResponseProto;
-import proto.ConnectionStatusProto;
-import proto.ConnectionStatusResponseProto;
-import proto.ConnectionsGrpcServiceGrpc;
-import proto.ConnectionsProto;
-import proto.ConnectionsResponseProto;
-import proto.CreateBlockRequestProto;
-import proto.CreateConnectionRequestProto;
-import proto.CreateConnectionResponseProto;
-import proto.MutualsResponseProto;
-import proto.PendingRequestProto;
-import proto.PendingResponseProto;
-import proto.RecommendationsProto;
-import proto.RecommendationsResponseProto;
-import proto.RespondConnectionRequestProto;
+import proto.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +20,16 @@ import java.util.stream.Collectors;
 public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGrpcServiceImplBase {
 
     private final ConnectionService connectionService;
+    private final EventService eventService;
     private static final String OK_STATUS = "Status 200";
     private static final String NOT_FOUND_STATUS = "Status 404";
 
 
     @Autowired
-    public ConnectionsService(ConnectionService connectionService) {
+    public ConnectionsService(ConnectionService connectionService, EventService eventService) {
         this.connectionService = connectionService;
 
+        this.eventService = eventService;
     }
 
     @Override
@@ -64,6 +53,7 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
         CreateConnectionResponseProto response;
         try {
             Connection connection = connectionService.sendConnectionRequest(initiatorId, receiverId);
+            eventService.save(new Event("User with id: " + request.getInitiatorId() + " send connection request to user with id: " + request.getReceiverId()));
             response = CreateConnectionResponseProto.newBuilder()
                     .setStatus(OK_STATUS)
                     .setConnectionStatus(connection.getConnectionStatus().toString())
@@ -84,6 +74,7 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
         boolean approve = request.getApprove();
         ConnectionResponseProto response;
         try {
+            eventService.save(new Event("User with id: " + request.getInitiatorId() + " responded to connection request from user with id: " + request.getReceiverId()));
             connectionService.respondConnectionRequest(initiatorId, receiverId, approve);
             response = ConnectionResponseProto.newBuilder()
                     .setStatus(OK_STATUS).build();
@@ -114,6 +105,7 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
     public void createBlock(CreateBlockRequestProto request, StreamObserver<BlockResponseProto> responseObserver) {
         BlockResponseProto blockResponseProto;
         try {
+            eventService.save(new Event("User with id: " + request.getInitiatorId() + " blocked user with id: " + request.getReceiverId()));
             connectionService.createBlock(request.getInitiatorId(), request.getReceiverId());
             blockResponseProto = BlockResponseProto.newBuilder().setStatus(OK_STATUS).build();
         } catch (UserDoesNotExist | BlockAlreadyExistsException exception) {
@@ -166,5 +158,17 @@ public class ConnectionsService extends ConnectionsGrpcServiceGrpc.ConnectionsGr
         responseObserver.onNext(response);
         responseObserver.onCompleted();
 
+    }
+
+    @Override
+    public void getConnectionsEvents(ConnectionsEventProto request, StreamObserver<ConnectionsEventResponseProto> responseObserver) {
+
+        List<String> events = new ArrayList<>();
+        for(Event event : eventService.findAll()){events.add(event.getDescription());}
+
+        ConnectionsEventResponseProto responseProto = ConnectionsEventResponseProto.newBuilder().addAllEvents(events).build();
+
+        responseObserver.onNext(responseProto);
+        responseObserver.onCompleted();
     }
 }
