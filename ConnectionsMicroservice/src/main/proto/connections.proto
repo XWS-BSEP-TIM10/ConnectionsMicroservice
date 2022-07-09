@@ -71,3 +71,8 @@ message MutualsResponseProto{
   repeated string userId = 1;
 }
 
+message ConnectionsEventProto{}
+
+message ConnectionsEventResponseProto{
+  repeated string events = 1;
+}
