@@ -19,10 +19,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        if (userRepository.findById(user.getId()).isPresent())
+        try {
+            if (userRepository.findById(user.getId()).isPresent())
+                return null;
+            user.setRoles(roleService.findByName("ROLE_USER"));
+            return userRepository.save(user);
+        }catch(Exception ex){
             return null;
-        user.setRoles(roleService.findByName("ROLE_USER"));
-        return userRepository.save(user);
+        }
     }
 
     @Override

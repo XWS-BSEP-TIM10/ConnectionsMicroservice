@@ -4,8 +4,10 @@ import com.connections.dto.ConnectionsResponseDto;
 import com.connections.dto.NewUserDto;
 import com.connections.dto.UpdateUserStatusDTO;
 import com.connections.model.User;
+import com.connections.service.impl.LoggerServiceImpl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sun.istack.logging.Logger;
 import io.nats.client.Connection;
 import io.nats.client.Dispatcher;
 import io.nats.client.Nats;
@@ -20,9 +22,12 @@ public class MessageQueueService {
 
     private Connection nats;
 
+    private LoggerService loggerService;
+
     private final UserService service;
 
     public MessageQueueService(UserService service) {
+        this.loggerService = new LoggerServiceImpl(this.getClass());
         this.service = service;
         try {
             String natsURI = System.getenv("NATS_URI") == null ? "localhost" : System.getenv("NATS_URI");
@@ -51,11 +56,12 @@ public class MessageQueueService {
             User user = service.save(new User(newUserDTO));
             ConnectionsResponseDto responseDto;
 
-            if (user == null)
+            if (user == null) {
                 responseDto = new ConnectionsResponseDto(false, "failed", newUserDTO.getUuid());
-            else
+                loggerService.unsuccessfulRegistration(newUserDTO.getUuid());
+            }else {
                 responseDto = new ConnectionsResponseDto(user.getId(), true, "success");
-
+            }
             publish(responseDto);
         });
 
