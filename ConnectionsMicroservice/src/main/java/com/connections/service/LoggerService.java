@@ -12,4 +12,5 @@ public interface LoggerService {
     void changeConnectionStatusFailed(String initiatorId, String receiverId);
     void initiatorUserDoesNotExists(String initiatorId, String receiverId);
     void receiverUserDoesNotExists(String initiatorId, String receiverId);
+    void unsuccessfulRegistration(String userId);
 }

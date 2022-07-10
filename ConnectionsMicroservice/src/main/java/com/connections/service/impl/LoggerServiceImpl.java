@@ -64,4 +64,9 @@ public class LoggerServiceImpl implements LoggerService {
     public void receiverUserDoesNotExists(String initiatorId, String receiverId) {
         logger.warn("User tried to change connection status with user that does not exist. Initiator id: {} Receiver id: {}", initiatorId, receiverId);
     }
+
+    @Override
+    public void unsuccessfulRegistration(String userId) {
+        logger.error("User registration failed. User id: {}", userId);
+    }
 }
